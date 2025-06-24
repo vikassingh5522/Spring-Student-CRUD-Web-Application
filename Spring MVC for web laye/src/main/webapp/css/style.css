@@ -1,0 +1,123 @@
+/* Ensure full height and remove spacing */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+
+}
+
+/* Background color for the entire page */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #a8edea, #fed6e3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+
+/* Main content container */
+.container {
+    width: 100%;
+    max-width: 800px;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+}
+
+/* Heading styles */
+h1, h2 {
+    color: #333;
+    text-align: center;
+}
+
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Links */
+a {
+    color: #4CAF50;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Form styles */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+input[type="text"], input[type="email"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+button {
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Error message */
+.error {
+    color: red;
+    font-weight: bold;
+}
+
+/* Code block / logs */
+pre {
+    background: #f4f4f4;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Navigation */
+nav {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+nav a {
+    margin: 0 15px;
+    font-weight: bold;
+    color: #333;
+}
