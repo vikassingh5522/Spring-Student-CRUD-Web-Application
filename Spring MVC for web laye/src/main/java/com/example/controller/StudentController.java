@@ -87,8 +87,12 @@ public class StudentController {
     @Loggable
     @GetMapping("/logs")
     public String viewLogs(Model model) {
-        String logs = logViewer.readLogFile();
-        model.addAttribute("logs", logs);
+        try {
+            List<String> logs = logViewer.getLastLogLines(1000); // safer, limited
+            model.addAttribute("logs", logs);
+        } catch (Exception e) {
+            model.addAttribute("error", "Error reading logs: " + e.getMessage());
+        }
         return "logs";
     }
 }
