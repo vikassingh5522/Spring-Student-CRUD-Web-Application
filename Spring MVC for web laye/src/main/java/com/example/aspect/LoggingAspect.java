@@ -14,24 +14,35 @@ import java.util.Arrays;
 @Aspect
 @Component
 public class LoggingAspect {
+
     private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
 
+    // Logs method entry with arguments
     @Before("@annotation(com.example.annotation.Loggable)")
     public void logBefore(JoinPoint joinPoint) {
-        String methodName = joinPoint.getSignature().toShortString();
+        String method = joinPoint.getSignature().toShortString();
         Object[] args = joinPoint.getArgs();
-        logger.debug("Entering method: {} with arguments: {}", methodName, Arrays.toString(args));
+
+        logger.debug("🔍 Entering method: {} | Args: {}", method, Arrays.toString(args));
     }
 
+    // Logs method exit (without printing entire result object to avoid large memory usage)
     @AfterReturning(pointcut = "@annotation(com.example.annotation.Loggable)", returning = "result")
     public void logAfterReturning(JoinPoint joinPoint, Object result) {
-        String methodName = joinPoint.getSignature().toShortString();
-        logger.debug("Exiting method: {} with return value: {}", methodName, result);
+        String method = joinPoint.getSignature().toShortString();
+
+        // Avoid logging full object if it's too large (e.g., student list)
+        String resultSummary = (result instanceof java.util.Collection)
+                ? "Collection of size " + ((java.util.Collection<?>) result).size()
+                : String.valueOf(result);
+
+        logger.debug("✅ Exiting method: {} | Result: {}", method, resultSummary);
     }
 
-    @AfterThrowing(pointcut = "@annotation(com.example.annotation.Loggable)", throwing = "exception")
-    public void logAfterThrowing(JoinPoint joinPoint, Throwable exception) {
-        String methodName = joinPoint.getSignature().toShortString();
-        logger.error("Exception in method: {} with message: {}", methodName, exception.getMessage());
+    // Logs exceptions thrown from methods
+    @AfterThrowing(pointcut = "@annotation(com.example.annotation.Loggable)", throwing = "ex")
+    public void logAfterThrowing(JoinPoint joinPoint, Throwable ex) {
+        String method = joinPoint.getSignature().toShortString();
+        logger.error("❌ Exception in method: {} | Message: {}", method, ex.getMessage(), ex);
     }
 }
