@@ -1,13 +1,16 @@
 package com.example.util;
 
+import org.apache.commons.io.input.ReversedLinesFileReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.stream.Collectors;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class LogViewer {
@@ -15,36 +18,38 @@ public class LogViewer {
     private static final String LOG_DIR = "logs";
     private static final String LOG_FILE_PATH = LOG_DIR + "/student-crud.log";
 
-    public String readLogFile() {
+    /**
+     * Reads only the last N lines of the log file.
+     */
+    public List<String> getLastLogLines(int lineCount) {
+        List<String> lines = new ArrayList<>();
+        File logFile = new File(LOG_FILE_PATH);
+
         try {
+            // Create log directory and file if not present
             Path logDir = Path.of(LOG_DIR);
-            Path logFile = Path.of(LOG_FILE_PATH);
-
-            // Ensure logs directory exists
-            if (!Files.exists(logDir)) {
-                Files.createDirectories(logDir);
+            if (!Files.exists(logDir)) Files.createDirectories(logDir);
+            if (!Files.exists(logFile.toPath())) {
+                Files.createFile(logFile.toPath());
+                logger.info("Log file created: {}", logFile.getAbsolutePath());
+                lines.add("Log file is currently empty.");
+                return lines;
             }
 
-            // If log file does not exist, create an empty file
-            if (!Files.exists(logFile)) {
-                Files.createFile(logFile);
-                logger.info("Log file created: {}", logFile.toAbsolutePath());
-                return "Log file is empty.";
+            // Use ReversedLinesFileReader to read from bottom up
+            try (ReversedLinesFileReader reader = new ReversedLinesFileReader(logFile, StandardCharsets.UTF_8)) {
+                for (int i = 0; i < lineCount; i++) {
+                    String line = reader.readLine();
+                    if (line == null) break;
+                    lines.add(0, line); // Maintain correct order
+                }
             }
-
-            // Read file content
-            String content = Files.lines(logFile).collect(Collectors.joining("\n"));
-
-            // If log file is empty
-            if (content.isBlank()) {
-                return "Log file is currently empty.";
-            }
-
-            return content;
-
         } catch (IOException e) {
             logger.error("Error reading log file at {}: {}", LOG_FILE_PATH, e.getMessage());
-            return "Unable to read logs: " + e.getMessage();
+            lines.clear();
+            lines.add("Unable to read logs: " + e.getMessage());
         }
+
+        return lines;
     }
 }
