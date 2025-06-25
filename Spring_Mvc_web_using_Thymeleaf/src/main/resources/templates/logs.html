@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Application Logs</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<div class="container">
+    <h1>Application Logs</h1>
+
+    <nav>
+        <a th:href="@{/students}">Back to List</a>
+        <a th:href="@{/}">Home</a>
+    </nav>
+
+    <!-- Show error if present -->
+    <p class="error" th:if="${error}" th:text="${error}"></p>
+
+    <!-- Show logs if available -->
+    <pre th:if="${logs}" th:text="${logs}"></pre>
+</div>
+</body>
+</html>

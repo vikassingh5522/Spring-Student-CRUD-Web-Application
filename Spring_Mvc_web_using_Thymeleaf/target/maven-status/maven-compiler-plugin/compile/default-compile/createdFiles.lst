@@ -1,0 +1,10 @@
+com\example\dao\StudentDAOImpl$1.class
+com\example\aspect\LoggingAspect.class
+com\example\dao\StudentDAOImpl.class
+com\example\config\SpringConfig.class
+com\example\annotation\Loggable.class
+com\example\dao\StudentDAO.class
+com\example\controller\StudentController.class
+com\example\util\LogViewer.class
+com\example\config\DatabaseInitializer.class
+com\example\model\Student.class
